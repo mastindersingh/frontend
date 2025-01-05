@@ -47,7 +47,7 @@ function Home() {
 
               {/* Display stock data */}
               <h3>Stocks</h3>
-              {portfolio.stocks && portfolio.stocks.length > 0 ? (
+              {portfolio.stocks && portfolio.stocks.length > 0 ? (  // Check if stocks exist and have length > 0
                 portfolio.stocks.map((stock, index) => (
                   <div key={index}>
                     <p>Symbol: {stock.symbol}</p>
@@ -56,7 +56,7 @@ function Home() {
                   </div>
                 ))
               ) : (
-                <p>No stocks available in your portfolio.</p>
+                <p>No stocks available in your portfolio.</p>  // Fallback if no stocks are found
               )}
 
               {/* Buy and Sell Stock Buttons */}

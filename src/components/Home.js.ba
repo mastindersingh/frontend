@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import httpClient from "../httpClient";
-import StockTransaction from "./StockTransaction"; 
-import { Link } from "react-router-dom"; // Import Link from react-router-dom
+import { getUserPortfolio } from "../portfolioService";
 
 function Home() {
   const [user, setUser] = useState(null);
@@ -15,12 +14,12 @@ function Home() {
   useEffect(() => {
     (async () => {
       try {
-        const userResp = await httpClient.get("//52.4.229.0:5555/@me");
-        setUser(userResp.data);
+        const resp = await httpClient.get("//52.4.229.0:5555/@me");
+        setUser(resp.data);
 
         // Fetch the portfolio data if the user is logged in
-        const portfolioResp = await httpClient.get("//52.4.229.0:5555/api/user_portfolio");
-        setPortfolio(portfolioResp.data);
+        const portfolioData = await getUserPortfolio();
+        setPortfolio(portfolioData);
       } catch (error) {
         console.log("Not authenticated");
       }
@@ -44,30 +43,17 @@ function Home() {
               <h2>Portfolio</h2>
               <p>Total Invested: ${portfolio.total_invested}</p>
               <p>Total Return: ${portfolio.total_return}</p>
+              <p>Percentage Up: {portfolio.percentage_up}%</p>
 
-              {/* Display stock data */}
-              <h3>Stocks</h3>
-              {portfolio.stocks && portfolio.stocks.length > 0 ? (
-                portfolio.stocks.map((stock, index) => (
-                  <div key={index}>
-                    <p>Symbol: {stock.symbol}</p>
-                    <p>Quantity: {stock.quantity}</p>
-                    <p>Purchase Price: ${stock.purchase_price}</p>
-                  </div>
-                ))
-              ) : (
-                <p>No stocks available in your portfolio.</p>
-              )}
-
-              {/* Buy and Sell Stock Buttons */}
-              <div>
-                <Link to="/buy-stock">
-                  <button>Buy Stock</button>
-                </Link>
-                <Link to="/sell-stock">
-                  <button>Sell Stock</button>
-                </Link>
-              </div>
+              {/* Example to display stock data */}
+              {Object.keys(portfolio.stock_data).map((stock, index) => (
+                <div key={index}>
+                  <h3>{portfolio.stock_data[stock].longName}</h3>
+                  <p>Current Price: ${portfolio.stock_data[stock].current_price}</p>
+                  <p>Performance: {portfolio.stock_data[stock].performance}</p>
+                  {/* Add more details as needed */}
+                </div>
+              ))}
             </div>
           ) : (
             <p>Loading portfolio...</p>
@@ -77,12 +63,12 @@ function Home() {
         <div>
           <p>You are not logged in</p>
           <div>
-            <Link to="/login">
+            <a href="/login">
               <button>Login</button>
-            </Link>
-            <Link to="/register">
+            </a>
+            <a href="/register">
               <button>Register</button>
-            </Link>
+            </a>
           </div>
         </div>
       )}

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import httpClient from "../httpClient";
+import { API_URLS } from "../apiConfig"; // Import the centralized API URL
 
 function Register() {
   const [email, setEmail] = useState("");
@@ -7,15 +8,18 @@ function Register() {
 
   const registerUser = async () => {
     try {
-      const resp = await httpClient.post("//localhost:5555/register", {
+      const resp = await httpClient.post(API_URLS.REGISTER, { // Use centralized URL
         email,
         password,
       });
 
       window.location.href = "/";
     } catch (error) {
-      if (error.response.status === 401) {
+      if (error.response && error.response.status === 401) {
         alert("Invalid credentials");
+      } else {
+        console.error("Error registering user:", error);
+        alert("Registration failed, please try again later.");
       }
     }
   };

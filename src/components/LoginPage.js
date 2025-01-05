@@ -7,7 +7,7 @@ function LoginPage() {
 
   const logInUser = async () => {
     try {
-      const resp = await httpClient.post("//localhost:5555/login", {
+      const resp = await httpClient.post("//52.4.229.0:5555/login", {
         email,
         password,
       });

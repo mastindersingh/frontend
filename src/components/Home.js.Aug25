@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import httpClient from "../httpClient";
 import StockTransaction from "./StockTransaction"; 
 import { Link } from "react-router-dom"; // Import Link from react-router-dom
-
 function Home() {
   const [user, setUser] = useState(null);
   const [portfolio, setPortfolio] = useState(null);
@@ -47,27 +46,27 @@ function Home() {
 
               {/* Display stock data */}
               <h3>Stocks</h3>
-              {portfolio.stocks && portfolio.stocks.length > 0 ? (
-                portfolio.stocks.map((stock, index) => (
-                  <div key={index}>
-                    <p>Symbol: {stock.symbol}</p>
-                    <p>Quantity: {stock.quantity}</p>
-                    <p>Purchase Price: ${stock.purchase_price}</p>
-                  </div>
-                ))
-              ) : (
-                <p>No stocks available in your portfolio.</p>
-              )}
+              {portfolio.stocks.map((stock, index) => (
+                <div key={index}>
+                  <p>Symbol: {stock.symbol}</p>
+                  <p>Quantity: {stock.quantity}</p>
+                  <p>Purchase Price: ${stock.purchase_price}</p>
+                </div>
+              ))}
 
-              {/* Buy and Sell Stock Buttons */}
-              <div>
-                <Link to="/buy-stock">
-                  <button>Buy Stock</button>
-                </Link>
-                <Link to="/sell-stock">
-                  <button>Sell Stock</button>
-                </Link>
-              </div>
+           {/* Buy and Sell Stock Buttons */}
+            <div>
+              <Link to="/buy-stock">
+                <button>Buy Stock</button>
+              </Link>
+              <Link to="/sell-stock">
+                <button>Sell Stock</button>
+              </Link>
+            </div>
+
+
+
+
             </div>
           ) : (
             <p>Loading portfolio...</p>
@@ -77,12 +76,12 @@ function Home() {
         <div>
           <p>You are not logged in</p>
           <div>
-            <Link to="/login">
+            <a href="/login">
               <button>Login</button>
-            </Link>
-            <Link to="/register">
+            </a>
+            <a href="/register">
               <button>Register</button>
-            </Link>
+            </a>
           </div>
         </div>
       )}
